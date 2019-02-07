@@ -59,6 +59,7 @@ function Game(){
 				   switch(direction) 
 				   {
 						   //case: the user wishes to go North to the Castle
+<<<<<<< HEAD
 					   case"north": 
 					   case"castle":  
 					   case"to the castle": 
@@ -89,11 +90,44 @@ function Game(){
 					   case"back":
 					   case"do something else":
 					   case"something else":
+=======
+					   case "north": 
+					   case "castle":  
+					   case "to the castle": 
+					   case "go north":
+						   Castle();
+						   break;
+						   //case: the user wishes to go South to the town Outskirts
+					   case "south": 
+					   case "outskirts": 
+					   case "town outskirts": 
+					   case "go south":
+						   Outskirts();
+						   break;
+						   //case: the user wishes to go west to the path blocked by gaurds
+					   case "west": 
+					   case "blocked path": 
+					   case "blocked": 
+					   case "go west":
+						   Gaurds();
+						   break;
+						   //case: the user wishes to explore the unexplored path to the east (Alley)
+					   case "east": 
+					   case "unkown path": 
+					   case "unkown": 
+					   case "go east":
+						   Alley();
+						   break;
+					   case "back":
+					   case "do something else":
+					   case "something else":
+>>>>>>> master
 						   TownSquare();
 						   //default: we don't understand the input and return the user to the town square
 					   default:
 						   alert("I don't understand " + direction);
 						   TownSquare();    
+<<<<<<< HEAD
                    }
 				   //case: the user wishes to go North to the castle
 			   case"north": 
@@ -146,11 +180,62 @@ function Game(){
                case"look again":
                    firstlook[0] = false;
                    TownSquare();
+=======
+				   }
+				   //case: the user wishes to go North to the castle
+			   case "north": 
+			   case "go castle": 
+			   case "go to the castle": 
+			   case "go north":
+				   Castle();
+				   break;
+				//case: the user wishes to go South to the town Outskirts
+			   case "south": 
+			   case "go to outskirts": 
+			   case "go to town outskirts": 
+			   case "go south" 
+				   Outskirts();
+				   break;
+				//case: the user wishes to go west to the path blocked by gaurds
+			   case "west": 
+			   case "go to blocked path": 
+			   case "blocked path": 
+			   case "go west":
+				   Gaurds();
+				   break;
+				//case: the user wishes to explore the unexplored path to the east (Alley)
+			   case "east":
+			   case "go to unkown path":
+			   case "unkown path": 
+			   case "go east":
+				   Alley();
+				   break;
+				   //case: the user wishes to speak to talk to the merchant
+			   case "talk to merchant": 
+			   case "talk": 
+			   case "talk merchant": 
+			   case "merchant":
+				   Merchant();
+				   break;
+				   //case: the user wishes to investigate something, but doesn't specify what
+			   case "investigate": 
+			   case "investigate bulletin": 
+			   case "investigate bulletin board":
+			   case: "bulletin board"
+			   case: "bulletin"
+			   case: "board"
+					BulletinBoard();
+			break;
+				   }
+>>>>>>> master
 				   //we can't understand the input
 				default:
 						alert("I don't understand " + townSquare);
 						TownSquare();
+<<<<<<< HEAD
            }
+=======
+>>>>>>> master
 				   
 		   }
 	}
