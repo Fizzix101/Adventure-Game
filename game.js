@@ -19,15 +19,17 @@ var firstlook = [
 	false, 
 	//Outskirts
 	false];
-//create variable 
+//create variable object for inventory
 var inventory = {
 	playerName: "",
+	occupation: "unemployed",
 	gold: 100,
 	sword: false,
 	dagger: true,
 	shield: false,
 	bow: false,
 	Armor: "plain clothing"
+	
 }
 Game();
 function Game(){
@@ -100,13 +102,13 @@ function Game(){
 			   case"go castle": 
 			   case"go to the castle": 
 			   case"go north":
-				   Castle();
+				   OutsideCastle();
 				   break;
 				//case: the user wishes to go South to the town Outskirts
 			   case"south": 
 			   case"go to outskirts": 
 			   case"go to town outskirts": 
-			   case"go south" 
+			   case"go south" :
 				   Outskirts();
 				   break;
 				//case: the user wishes to go west to the path blocked by gaurds
@@ -154,4 +156,77 @@ function Game(){
            }
 				   
         }
+	//create the Outside Castle function
+	function OutsideCastle()
+	{
+		//if the user has not been here before describe the area and ask the user what they would like to do
+		if(firstlook[1] == false)
+			{
+				
+				var Castle = prompt("You walk to the Castle gates. When you arrive, the gates to the north are open and two gaurds stand at attention. There is a path that leads West towards the gaurd's barracks. By going south you can go back to the Town Square. What are you going to do? \n Talk to gaurds\n Go somewhere").toLowerCase();
+				firstlook[1] = true;
+			}
+		else
+			{
+				var Outsidecastle = prompt("You stand at the Castle gates. What are you going to do? \n Go somewhere \n Talk to the gaurds").toLowerCase();
+			}
+		//take the user's input and apply it accordingly
+		switch(Outsidecastle)
+		{
+				//case: the user wants to go somewhere but doesn't input where
+			case "go somewhere":
+			case "go":
+				var direction = prompt("Where would you like to go? \n north, Inside the castle\n West, to the guard barracks\n South, back to Town Square").toLowerCase();
+				switch(direction){
+					//case: the user wishes to go in the castle
+					case "go north":
+					case "north":
+					case "go inside castle":
+					case "inside castle":
+					case "castle":
+						InsideCastle();
+						break;
+					//case: the user wishes to go to the guard barracks
+					case "go to guard barracks":
+					case "guard barracks":
+					case "go west":
+					case "west":
+						GuardBarracks();
+						break;
+					//case: the user wishes to return to town square
+					case "go to sown square":
+					case "town square":
+					case "go south":
+					case "south":
+						TownSquare();
+						break;
+					case "back":
+						OutsideCastle();
+						break;
+					//the user inputs something we don't understand or we can't do anything
+					default:
+						alert("I don't understand, " + direction + " or you cannot do that here.")
+						OutsideCastle();
+				}
+				break;
+				//case: the user wants to go to the castle
+			case "go north":
+			case "north":
+			case "go inside castle":
+			case "inside castle":
+			case "go to castle":
+			case "castle":
+				InsideCastle();
+				break;
+			//case: the user wishes to go to the guard barracks
+			case "go to guard barracks":
+			case "guard barracks":
+			case "go west":
+			case "west":
+				GuardBarracks();
+				break;
+				
+		}
+		
 	}
+}
