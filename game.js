@@ -9,15 +9,19 @@ Multiline comment
 //prompt("What is your favorite Pokemon?")
 //create firstlook variable to avoid displaing the are description redundantly.
 var firstlook = [
-	//Town Square
+	//Town Square 0
 	false, 
-	//Castle
+	//Outside castle 1
 	false, 
-	//Alleyway
+	//castle doors 2
+	false,
+	//Inside castle 3
+	false,
+	//Alleyway 4
 	false, 
-	//Blocked path
+	//Blocked path 5
 	false, 
-	//Outskirts
+	//Outskirts 6
 	false];
 //create variable object for inventory
 var inventory = {
@@ -31,10 +35,12 @@ var inventory = {
 	Armor: "plain clothing"
 	
 }
+var townHero = false;
+
 Game();
 function Game(){
 	//state the title of the game
-	alert("Life in Duniker");
+	alert("Adventure");
 	//ask for the player's name and store the name
 	inventory.playerName = prompt("What is your name?");
 	//Welcome the player to the land of Duniker
@@ -163,7 +169,7 @@ function Game(){
 		if(firstlook[1] == false)
 			{
 				
-				var Castle = prompt("You walk to the Castle gates. When you arrive, the gates to the north are open and two gaurds stand at attention. There is a path that leads West towards the gaurd's barracks. By going south you can go back to the Town Square. What are you going to do? \n Talk to gaurds\n Go somewhere").toLowerCase();
+				var Outsidecastle = prompt("You walk to the Castle gates. When you arrive, the gates to the north are open and two gaurds stand at attention. There is a path that leads West towards the gaurd's barracks. By going south you can go back to the Town Square. What are you going to do? \n Talk to gaurds\n Go somewhere").toLowerCase();
 				firstlook[1] = true;
 			}
 		else
@@ -184,7 +190,7 @@ function Game(){
 					case "go inside castle":
 					case "inside castle":
 					case "castle":
-						InsideCastle();
+						CastleGates();
 						break;
 					//case: the user wishes to go to the guard barracks
 					case "go to guard barracks":
@@ -216,7 +222,7 @@ function Game(){
 			case "inside castle":
 			case "go to castle":
 			case "castle":
-				InsideCastle();
+				CastleGates();
 				break;
 			//case: the user wishes to go to the guard barracks
 			case "go to guard barracks":
@@ -225,8 +231,55 @@ function Game(){
 			case "west":
 				GuardBarracks();
 				break;
+				//case: the user wishes to go back to town Square
+			case "back": 
+			case "town square":
+			case "go to town square":
+			case "go south":
+				TownSquare();
+				 break;
+				//case: the user wishes to speak to the gaurds
+			case "talk to guards":
+			case "talk":
+			case "guards":
+				CastleGates();
+				break;
+			default:
+				alert("I don't understand '" + Outsidecastle + "' or you cannot do that here");
+				OutsideCastle();
 				
 		}
 		
+	}
+	function CastleGates()
+	{
+		//the user attempts to go into the castle for the first time
+		if(firstlook[2] = false)
+		{
+			firstlook[2] = true;
+			alert("The guards stop you and say, 'What business do you have here?'")
+			// the player has not joined the royal guard/army
+			if(inventory.occupation != "soldier"){
+				var guards = prompt("What do you say to them? \n 1 - 'just looking around' \n 2 - 'I'd like to join the guard'.").toLowerCase();
+			}
+			// the player has already joined the royal guard/army
+			else if (townHero = true) 
+			{
+				alert("The guards salute you as you walk inside");
+				InsideCastle();
+			}
+			else{
+				alert()
+				var guards = prompt ("What do you say to them? \n 1 -'just looking around' \n 2 - 'Soldier " + inventory.playerName + " reporting for duty");
+			}
+		}
+		else if (inventory.occupation != "soldier" || inventory.occupation != "knight" || inventory.occupation != "commander" || inventory.occupation != 'captain')
+		{
+			alert("The soldiers stop you and say, 'You again? What do you want?'");
+			var guards = prompt("What do you say to them? \n 1 - 'just looking around' \n 2 - 'I'd like to join the guard'.").toLowerCase();
+		}
+		else if(townHero = true){
+			
+		}
 	}
 }
