@@ -23,6 +23,28 @@ var firstlook = [
 	false, 
 	//Outskirts 6
 	false];
+//make a check inventory function for the player to check their inventory
+var checkInv = function()
+{
+	if(sword == true){
+		if(inventory.bow == false)
+		{
+			alert(inventory.playerName + "'s inventory \n You are: " + inventory.occupation + "\n gold: " +inventory.gold + "\n Weapons: dagger, sword \n Armor: " + inventory.armor + "\n Shield: " + inventory.shield);
+		}
+		else{
+			alert(inventory.playerName + "'s inventory \n You are: " + inventory.occupation + "\n gold: " +inventory.gold + "\n Weapons: dagger, sword, bow \n Armor: " + inventory.armor + "\n Shield: " + inventory.shield);
+		}
+	}
+	else
+		{
+			alert(inventory.playerName + "'s inventory \n You are: " + inventory.occupation + "\n gold: " +inventory.gold + "\n Weapons: dagger \n Armor: " + inventory.armor + "\n Shield: " + inventory.shield);
+		}
+}
+//create a function to check gold
+var checkGold = function()
+{
+	alert ("You have " + inventory.gold + "gold")
+}
 //create variable object for inventory
 var inventory = {
 	playerName: "",
@@ -30,11 +52,11 @@ var inventory = {
 	gold: 100,
 	sword: false,
 	dagger: true,
-	shield: false,
+	shield: "none",
 	bow: false,
-	Armor: "plain clothing"
-	
+	armor: "plain clothing"
 }
+//create a town hero status variable
 var townHero = false;
 
 Game();
@@ -269,7 +291,7 @@ function Game(){
 				InsideCastle();
 			}
 			else{
-				alert()
+				alert("The gaurds stop you and say, 'What business do you have here?'");
 				var guards = prompt ("What do you say to them? \n 1 -'just looking around' \n 2 - 'Soldier " + inventory.playerName + " reporting for duty");
 			}
 		}
@@ -278,8 +300,11 @@ function Game(){
 			alert("The soldiers stop you and say, 'You again? What do you want?'");
 			var guards = prompt("What do you say to them? \n 1 - 'just looking around' \n 2 - 'I'd like to join the guard'.").toLowerCase();
 		}
-		else if(townHero = true){
-			
+		else if(townHero = true)
+		{
+			alert("The guards salute you as you walk inside");
+			InsideCastle;
 		}
+		
 	}
 }
