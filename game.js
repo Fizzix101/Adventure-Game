@@ -17,11 +17,13 @@ var firstlook = [
 	false,
 	//Inside castle 3
 	false,
-	//Alleyway 4
+	//gaurd barracks 4
 	false, 
-	//Blocked path 5
+	//Alleyway 5
 	false, 
-	//Outskirts 6
+	//Blocked path 6
+	false, 
+	//Outskirts 7
 	false];
 //make a check inventory function for the player to check their inventory
 var checkInv = function()
@@ -74,7 +76,7 @@ function Game(){
 		//ask the user what they would like to do in the town square and display the description of the Town Square based on whether or not 
 		if(firstlook[0] == false)
 			{
-			var townSquare = prompt("Welcome to the capitol city of Stralton. You stand in the town square. the city is full of life all around you. There is a Merchant selling his wares. There is a path to the north heading towards the castle. There is what appears to be a bulletin board with several advertisements. There are also a path to the East, but you don't know what is over there. The path to the South leads to the outskirts of town. The path to the West appears to be blocked by some gaurds. What are you going to do? \n go somewhere. \n talk to merchant \n investigate the bulletin board \n look around again (this option will give the discription of the current area)").toLowerCase();
+			var townSquare = prompt("Welcome to the capitol city of Stralton. You stand in the town square. the city is full of life all around you. There is a Merchant selling his wares. There is a path to the north heading towards the castle. There is what appears to be a bulletin board with several advertisements. There are also a path to the East, but you don't know what is over there. The path to the South leads to the outskirts of town. The path to the West appears to be blocked by some guards. What are you going to do? \n go somewhere. \n talk to merchant \n investigate the bulletin board \n look around again (this option will give the discription of the current area)").toLowerCase();
 			firstlook[0] = true;
 			}
 		else{
@@ -191,12 +193,12 @@ function Game(){
 		if(firstlook[1] == false)
 			{
 				
-				var Outsidecastle = prompt("You walk to the Castle gates. When you arrive, the gates to the north are open and two gaurds stand at attention. There is a path that leads West towards the gaurd's barracks. By going south you can go back to the Town Square. What are you going to do? \n Talk to gaurds\n Go somewhere").toLowerCase();
+				var Outsidecastle = prompt("You walk to the Castle gates. When you arrive, the gates to the north are open and two gaurds stand at attention. There is a path that leads West towards the guard's barracks. By going south you can go back to the Town Square. What are you going to do? \n Talk to gaurds\n Go somewhere").toLowerCase();
 				firstlook[1] = true;
 			}
 		else
 			{
-				var Outsidecastle = prompt("You stand at the Castle gates. What are you going to do? \n Go somewhere \n Talk to the gaurds").toLowerCase();
+				var Outsidecastle = prompt("You stand at the Castle gates. What are you going to do? \n Go somewhere \n Talk to the guards").toLowerCase();
 			}
 		//take the user's input and apply it accordingly
 		switch(Outsidecastle)
@@ -295,16 +297,39 @@ function Game(){
 				var guards = prompt ("What do you say to them? \n 1 -'just looking around' \n 2 - 'Soldier " + inventory.playerName + " reporting for duty");
 			}
 		}
-		else if (inventory.occupation != "soldier" || inventory.occupation != "knight" || inventory.occupation != "commander" || inventory.occupation != 'captain')
+		else if (inventory.occupation != "soldier" || inventory.occupation != "knight" || inventory.occupation != "commander" || inventory.occupation != 'captain' || townHero != true)
 		{
 			alert("The soldiers stop you and say, 'You again? What do you want?'");
 			var guards = prompt("What do you say to them? \n 1 - 'just looking around' \n 2 - 'I'd like to join the guard'.").toLowerCase();
 		}
-		else if(townHero = true)
+		else
 		{
 			alert("The guards salute you as you walk inside");
-			InsideCastle;
+			InsideCastle();
 		}
+		switch (guards)
+			{
+				case "1":
+					alert("The gaurds say, 'I'm afraid we can't let you pass, these are times of war after all.'");
+					break;
+				case "2":
+					if(inventory.occupation != "soldier")
+						{
+							alert("One of the gaurds tells you, 'You are going to want to head west of here to the guard barracks, then.");
+							OutsideCastle();
+						}
+					else
+						{
+							alert("One of them say, 'Very well, then' they get out of your way and salute you as you walk into the castle");
+							InsideCastle();
+						}
+					
+					break;
+			}
+		
+	}
+	function GuardBarracks()
+	{
 		
 	}
 }
