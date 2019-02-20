@@ -56,7 +56,9 @@ var inventory = {
 	dagger: true,
 	shield: "none",
 	bow: false,
-	armor: "plain clothing"
+	armor: "plain clothing",
+	captainsOrders: false,
+	quest: ""
 }
 //create a town hero status variable
 var townHero = false;
@@ -297,7 +299,7 @@ function Game(){
 				var guards = prompt ("What do you say to them? \n 1 -'just looking around' \n 2 - 'Soldier " + inventory.playerName + " reporting for duty");
 			}
 		}
-		else if (inventory.occupation != "soldier" || inventory.occupation != "knight" || inventory.occupation != "commander" || inventory.occupation != 'captain' || townHero != true)
+		else if (inventory.occupation != "soldier" || inventory.occupation != "knight" || inventory.occupation != "commander" || inventory.occupation != 'captain' || inventory.occupation != "guard" || townHero != true)
 		{
 			alert("The soldiers stop you and say, 'You again? What do you want?'");
 			var guards = prompt("What do you say to them? \n 1 - 'just looking around' \n 2 - 'I'd like to join the guard'.").toLowerCase();
@@ -330,6 +332,49 @@ function Game(){
 	}
 	function GuardBarracks()
 	{
-		
+	while (inventory.occupation == 'unemployed' && inventory.quest == '')
+		{
+			if(firstlook[4] == false){
+			var captain = prompt("As you enter the Barracks, you see someone wearing a Captain's Uniform sitting at a table writing something down. He notices you walk in. He put's down his quill, and says 'I am Captain Samson, What can I do for you?' what is your response'\n 1 - I am looking for work. \n 2 - I am looking to join the guard \n 3 - Just looking around.").toLowerCase();
+				firstlook[4] = true;
+			}
+			else{
+				var captain = prompt("Captain Samson looks at you and asks, 'What can I do for you?' what is your response'\n 1 - I am looking for work. \n 2 - I am looking to join the guard \n 3 - Just looking around.").tolowerCase();
+			}
+			switch(captain)
+				{
+					case '1':
+						var westQuest = prompt("Captain Samson says, 'Well if that is the case, there's some trouble on the West side of town. The guard there can give you some more information. Just head to the TownSquare and head west. You sure you are up to it?'\n Do you accept this quest? Y/N ").toLowerCase();
+						if(westQuest == 'y' || 'yes' || 'ye')
+							{
+								alert("'Very well then, report back to me when you are done.'\n You have now begun the quest, Unrest in the West");
+								inventory.quest = "Unrest in the West";
+								GuardBarracks();
+							}
+						else
+						{
+							alert("'Well, let me know if you change your mind'");
+							GaurdBarracks();
+						}
+					
+						break;
+					case'2':		
+						var recruitment = prompt("'Is that so? Well, we certainly could use the help! Would you like to be a soldier or just a town guard? \n 1 - soldier \n 2 - guard \n 3 - I changed my mind.").toLowerCase();
+						switch(recruitment){
+							case '2':
+							alert("'Okay then, give me just a second', Captain Samson goes through a door on the left and returns with a uniform, a sword, and a shield. 'Here is your equipment, put these on and report to the West of Town Square. You are also welcome to sleep here whenever you'd like, just don't slack off.'\n You change into your new uniform \n You're occupation is now guard \n You have started the quest, Unrest in the West");
+							inventory.occupation = 'guard';
+							inventory.quest = 'Unrest in the West';
+							inventory.sword = true;
+							inventory.shield = false;
+						break;
+						}
+						break;
+					default:
+							alert("'Sorry, I don't quite understand. I'm a bit hard of hearing', says the Captain");
+							GuardBarracks();
+							
+				}
+		}
 	}
 }
