@@ -13,7 +13,7 @@ var firstlook = [
 	false, 
 	//Outside castle 1
 	false, 
-	//castle doors 2
+	//castle gates 2
 	false,
 	//Inside castle 3
 	false,
@@ -58,8 +58,16 @@ var inventory = {
 	bow: false,
 	armor: "plain clothing",
 	captainsOrders: false,
-	quest: ""
+	quest: "",
+    questCompleteion: false
 }
+//create variable object for player's stats
+var playerStatus = {
+    health: 3,
+    energy: 7,
+    
+}
+
 //create a town hero status variable
 var townHero = false;
 
@@ -332,17 +340,57 @@ function Game(){
 	}
 	function GuardBarracks()
 	{
-	while (inventory.occupation == 'unemployed' && inventory.quest == '')
-		{
+	while (playerStatus.health > 0)
+		{   
+        //check to see if the player has been here already
 			if(firstlook[4] == false){
 			var captain = prompt("As you enter the Barracks, you see someone wearing a Captain's Uniform sitting at a table writing something down. He notices you walk in. He put's down his quill, and says 'I am Captain Samson, What can I do for you?' what is your response'\n 1 - I am looking for work. \n 2 - I am looking to join the guard \n 3 - Just looking around.").toLowerCase();
 				firstlook[4] = true;
 			}
-			else{
-				var captain = prompt("Captain Samson looks at you and asks, 'What can I do for you?' what is your response'\n 1 - I am looking for work. \n 2 - I am looking to join the guard \n 3 - Just looking around.").tolowerCase();
-			}
-			switch(captain)
+            //check to see if the player has completed their quest yet
+            else if(inventory.quest == 'Unrest in the West' && inventory.questCompleteion == true) 
+            {
+                alert("The Captain stands up and says, 'You actually manged to do it! Congragulations, the King wishes to speak to you and reward you personally, go see him at once.' He leads you to the inside of the Castle");
+                InsideCastle();
+            }
+            //allow the player to sleep if they do have the quest
+            else if(inventory.quest == 'Unrest in the West' && inventory.questCompleteion == false)
+            { 
+                    var guardBarracks  = prompt('The guard barracks seem to be empty, Would you like to go to sleep? \n Y/N?').toLowerCase();
+                    if(guardBarracks == 'y'){
+                        alert('You go to sleep in one of the beds, you are well rested and recover to full health');
+                        playerStatus.health = 3;
+                        playerStatus.energy = 7;
+                        OutsideCastle();
+                    }
+                else
+                {
+                    OutsideCastle();
+                }
+            }
+            //check to see if the player is a soldier or gaurd
+            else if (inventory.occupation == 'soldier' || inventory.occupation == 'guard')
+            {
+                var guardBarracks  = prompt('The guard barracks seem to be empty, Would you like to go to sleep? \n Y/N?').toLowerCase();
+                    if(guardBarracks == 'y'){
+                        alert('You go to sleep in one of the beds, you are well rested and recover to full health');
+                        playerStatus.health = 3;
+                        playerStatus.energy = 7;
+                        OutsideCastle();
+                    }
+                else{
+                    OutsideCastle();
+                }
+                
+            }
+            
+            else{
+			     var captain = prompt( "'I am Captain Samson, What can I do for you?' what is your response'\n 1 - I am looking for work. \n 2 - I am looking to join the guard \n 3 - Just looking around.");
+				}
+            //Make a switch function to talk to the Captain
+            switch(captain)
 				{
+                        //the player wants to help out without getting a job
 					case '1':
 						var westQuest = prompt("Captain Samson says, 'Well if that is the case, there's some trouble on the West side of town. The guard there can give you some more information. Just head to the TownSquare and head west. You sure you are up to it?'\n Do you accept this quest? Y/N ").toLowerCase();
 						if(westQuest == 'y' || 'yes' || 'ye')
@@ -366,15 +414,31 @@ function Game(){
 							inventory.occupation = 'guard';
 							inventory.quest = 'Unrest in the West';
 							inventory.sword = true;
-							inventory.shield = false;
+							inventory.shield = true;
+                                OutsideCastle();
 						break;
+                            case '1':
+                            alert("'Okay then, give me just a second', Captain Samson goes through a door on the left and returns with a uniform, a sword, and a shield. 'Here is your equipment, put these on and report to General Kasimir near the Outskirts of Town. You are also welcome to sleep here whenever you'd like, just don't slack off.'\n You change into your new uniform \n You're occupation is now soldier \n You have started the quest, Soldier of Stralton");
+							inventory.occupation = 'soldier';
+							inventory.quest = 'Soldier of Stralton';
+							inventory.sword = true;
+							inventory.shield = true;
+                                OutsideCastle();
+                        break;
+                    case'3':
+                                alert("'In that case, I'm going to have to ask you to leave'");
+                                OutsideCastle();
 						}
 						break;
 					default:
 							alert("'Sorry, I don't quite understand. I'm a bit hard of hearing', says the Captain");
 							GuardBarracks();
-							
-				}
+                }
 		}
 	}
+    function TownOutskirts()
+    {}
+    function BlockedPath()
+    {}
+    function BackAlley()
 }
