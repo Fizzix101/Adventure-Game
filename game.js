@@ -7,7 +7,7 @@ Multiline comment
 //confirm("Do you like Pokemon?");
 
 //prompt("What is your favorite Pokemon?")
-//create firstlook variable to avoid displaing the are description redundantly.
+//create firstlook variable to avoid displaing the area description redundantly.
 var firstlook = [
 	//Town Square 0
 	false, 
@@ -24,6 +24,10 @@ var firstlook = [
 	//Blocked path 6
 	false, 
 	//Outskirts 7
+	false,
+	//Forest 8
+	false,
+	//Encampment 9
 	false];
 //make a check inventory function for the player to check their inventory
 var checkInv = function()
@@ -59,15 +63,24 @@ var inventory = {
 	armor: "plain clothing",
 	captainsOrders: false,
 	quest: "",
-    questCompleteion: false
+    questCompleteion: false,
+	lantern: false,
+	generalsOrders: false,
 }
 //create variable object for player's stats
 var playerStatus = {
     health: 3,
     energy: 7,
-    
+    speed: 3,
 }
-
+//create variable object for enemies
+//wolf
+var Wolf = function()
+{
+	strength: 1,
+	speed: 1,
+	health: 2,
+}
 //create a town hero status variable
 var townHero = false;
 
@@ -340,6 +353,7 @@ function Game(){
 	}
 	function GuardBarracks()
 	{
+		//this loop is only here because it will break otherwise
 	while (playerStatus.health > 0)
 		{   
         //check to see if the player has been here already
@@ -436,9 +450,132 @@ function Game(){
                 }
 		}
 	}
-    function TownOutskirts()
-    {}
+    function Outskirts()
+    {
+		if(firstlook[7] == false )
+		   {
+		   	alert("You walk out to the outskirts of town and see, what appears to be a military encampment. There is also a path that continues Southward.")
+			   var outskirts = prompt("What are you going to do? \n go somewhere \n investigate the encampment").toLowerCase();
+		   }
+		else
+		{
+			if(inventory.occupation == 'soldier'){
+				var outskirts = prompt("What are you going to do? \n go somewhere \n report to camp.").toLowerCase();
+			}
+			else{
+				var outskirts = prompt("What are you going to do? \n go somewhere \n investigate the encampment").toLowerCase();
+			}
+			switch (outskirts){
+				case "go": 
+			   case "go somewhere":
+				   var direction = prompt("Where would you like to go?\n North, back into town \n South, further away from town\n ").toLowerCase();
+				   switch(direction) 
+				   {
+						   //case: the user wishes to go North to the Castle
+					   case"north": 
+					   case"town square":  
+					   case"town": 
+					   case"go north":
+						   TownSquare();
+						   break;
+						   //case: the user wishes to go further out of town
+					   case"south": 
+					   case"further away": 
+					   case"further": 
+					   case"go south":
+						   Forest();
+						   break;
+						   //case: the user wishes to the military encampent
+					   case"encampment": 
+					   case"camp": 
+					   case"go to encampment": 
+					   case"go to camp":
+						   Encampment();
+						   break;
+						   //case: the user wishes to return 
+					   case "back":
+					   case "do something else":
+					   case "something else":
+						   Outskirts();
+						   //default: we don't understand the input and return the user to the town outskirts
+					   default:
+						   alert("I don't understand " + direction);
+						   Outskirts();   
+				
+			}
+					break;
+				case'report':
+				case"encampment": 
+				case"camp": 
+				case"go to encampment": 
+				case"go to camp":
+				case'investigate':
+				case'investigate encampment':
+				case'investigate camp':
+					Encampment();
+					break;
+				case"south": 
+				case"further away": 
+				case"further": 
+				case"go south":
+					Forest();
+				break;
+					default:
+					alert("I don't understand " + outskirts);
+					Outskirts();   
+			}
+		
+		}
+	}
     function BlockedPath()
-    {}
+    {
+		
+	}
     function BackAlley()
+	{
+		
+	}
+	function Forest()
+	{
+		//ask the player if they would like to enter the forest
+		var forest = prompt("The forest seems pretty dark and scary, are you sure you want to go in there?(Y/N)").toLowerCase;
+		switch(forest)
+			{
+				case 'y':
+				case'yes':
+				case 'ye':
+					//if the player has the generals's orders and a lantern, they get through the forest safely
+					if(inventory.generalsOrders == true && inventory.lantern == true)
+						{
+						alert("Thankfully, General Kasimir included a map with his orders. With the help of the lantern he gave you, you manage to find the other soldiers just fine");
+							Battlefield();
+						}
+					else if(inventory.lantern == true)
+						{
+							playerStatus.energy-=;
+							var encounter = Math.Random(1,100);
+							if(encounter >= 50){
+								alert("As you aimlessly wander around the forest, you begin to hear growling and the rustling of leaves");
+								Wolf();
+								var wolfFight = prompt("You encounter a wolf! what are you going to do? \n attack with something \n run away").toLowerCase();
+								while
+								
+							}
+						}
+					break;
+				case'n':
+				case'no':
+					Outskirts();
+					break;
+				default:
+					alert("I don't understand" + forest);
+					Forest();
+			}
+
+		
+	}
+	function Encampment()
+	{
+		
+	}
 }
