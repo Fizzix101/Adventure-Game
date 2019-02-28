@@ -76,6 +76,7 @@ var inventory = {
 	shield: "none",
 	bow: false,
 	armor: "plain clothing",
+    armorType: "none",
 	captainsOrders: false,
 	quest: "",
     questCompleteion: false,
@@ -86,21 +87,182 @@ var inventory = {
 var playerStatus = {
     health: 3,
     energy: 7,
-    speed: 3,
 }
 //create variable object for enemies
-//wolf
-var Wolf = function()
+//enemy
+var wolf = function()
 {
 	var strength = 1;
-	var speed = 1;
 	var health = 2;
     var stun = false;
     var attackStatus = true;
+    var name = 'Wolf';
     
 }
 //create a town hero status variable
+
 var townHero = false;
+//create a combat function
+var Combat = function(enemy)
+{
+    alert("You encounter an " + enemy.name);
+    while(enemy.health > 0 && playerStatus.health > 0)
+   {
+        var hit = Math.Random() * 100;
+        var fight = prompt("what are you going to do? \n attack with something \n run away \n defend").toLowerCase();
+        switch(fight)
+        {
+            case 'attack':
+            var attack = prompt("What are you attacking with?").toLowerCase();
+            switch(attack)
+            {
+                case'sword':
+                case'attack sword':
+                case'attack with sword':
+                    if(hit >= 20 || enemy.stun == true)
+                     {
+                        alert("You easily stab your sword through the " + enemy.name + "!");
+                         enemy.health -=2;
+                    }
+                        else
+                    {
+                        alert("The " + enemy.name + " is faster than you thought, he manges to dodge your sword swipe!");
+                    }
+                    break;
+                case'dagger':
+                case'attack dagger':
+                case'attack with dagger':
+                        if(hit >= 30 && inventory.sword == true)
+                        {
+                            alert("You manage to slash the " + enemy.name + " with your dagger.");
+                            enemy.health --;
+                        }
+                        else if(inventory.sword == false)
+                        {
+                            alert("You don't have a sword!");      
+                        }
+                        else
+                        {
+                            alert("The " + enemy.name + " jumps away before you can hit it!");
+                        }
+                        break;
+                    case'bow':
+                    case'attack bow':
+                    case'attack with bow':
+                        if(hit <= 30 && inventory.bow == true)
+                        {
+                                alert("Nice Shot!, your arrow goes straight through the " + enemy.name + "'s heart");
+                                enemy.health == 0;
+                        }
+                        else if(hit >= 50 && inventory.bow == true)
+                        {
+                                alert("You manage to hit the " + enemy.name + " in the leg!");
+                                enemy.health --;
+                                enemy.stun = true;
+                        }
+                        else if(inventory.bow == false)
+                        {
+                            alert("You don't have a Bow!");
+                        }
+                        else
+                        {
+                            alert("Almost instantly, the " + enemy.name + " manages to dodge your arrow!");
+                        }
+                            break;
+                        default:
+                            alert("I don't understand" + attack);
+                                                        
+            }
+                    break;
+            case'sword':
+            case'attack sword':
+            case'attack with sword':
+                if(hit >= 20 || enemy.stun == true)
+                {
+                    alert("You easily stab your sword through the " + enemy.name + "!");
+                    enemy.health -=2;
+                }
+                else
+                {
+                    alert("The " + enemy.name + " is faster than you thought, he manges to dodge your sword swipe!");
+                }
+                break;
+            case'dagger':
+            case'attack dagger':
+            case'attack with dagger':
+                if(hit >= 30 && inventory.sword == true)
+                {
+                    alert("You manage to slash the " + enemy.name + " with your dagger.");
+                    enemy.health --;
+                }
+                else if(inventory.sword == false)
+                {
+                    alert("You don't have a sword!");      
+                }
+                else
+                {
+                alert("The " + enemy.name + " jumps away before you can hit it!");
+                }
+                break;
+            case'bow':
+            case'attack bow':
+            case'attack with bow':
+                if(hit <= 30 && inventory.bow == true)
+                {
+                    alert("Nice Shot!, your arrow goes straight through the " + enemy.name + "'s heart");
+                    enemy.health == 0;
+                }
+                else if(hit >= 50 && inventory.bow == true)
+                {
+                    alert("You manage to hit the " + enemy.name + " in the leg!");
+                    enemy.health --;
+                    enemy.stun = true;
+                }
+                else if(inventory.bow == false)
+                {
+                    alert("You don't have a Bow!");
+                }
+                else
+                {
+                    alert("Almost instantly, the " + enemy.name + " manages to dodge your arrow!");
+                }
+                break;
+            case'run':
+            case'run away':
+                if(hit <= 50)
+            {
+                alert("You manage to run away, all the way back to the Town Square!");
+                playerStatus.energy --;
+                TownSquare();
+            }
+            else
+            {
+            alert("You try your best to get away, but you can't lose the " + enemy.name + ". You can see the town but decide it is better to not lead the enemy into town.");
+            }
+                break;
+            case'defend':
+            case'block':
+            if(inventory.shield == 'none')
+            {
+                if(hit >= 60)
+                {
+                    alert("Even without a shield, you still manage to fend off the " + enemy.name + "'s attack");
+                                                            
+                }
+                else
+                {
+                    alert("Without a shield, you can't do anything to stop the " + enemy.name + "'s attack. He manages to scratch your arm");
+                    playerStatus.health --;
+                }
+            }
+                break;
+            default:
+            alert("I don't understand" + enemyFight );
+                                                
+                                        }
+        if(enemy.stun == false && enemy.health >= )
+    }
+}
 
 Game();
 function Game(){
@@ -578,165 +740,11 @@ function Game(){
 							var encounter = Math.Random() * 100;
 							if(encounter >= 50){
 								alert("As you aimlessly wander around the forest, you begin to hear growling and the rustling of leaves");
-								var wolf = new Wolf();
-                                alert("You encounter a Wolf!")
+								var enemy = new enemy();
+                                alert("You encounter a " + enemy.name + "!");
+                                Combat();
 								
-								while(wolf.health > 0 && playerStatus.health > 0)
-                                {
-                                    var hit = Math.Random() * 100;
-                                    var wolfFight = prompt("what are you going to do? \n attack with something \n run away \n defend").toLowerCase();
-                                    switch(wolfFight)
-                                        {
-        
-                                            case 'attack':
-                                                var attack = prompt("What are you attacking with?").toLowerCase();
-                                                switch(attack)
-                                                {
-                                                    case'sword':
-                                                    case'attack sword':
-                                                    case'attack with sword':
-                                                        if(hit >= 20 || wolf.stun == true)
-                                                        {
-                                                            alert("You easily stab your sword through the Wolf!");
-                                                            wolf.health -=2;
-                                                        }
-                                                        else
-                                                        {
-                                                            alert("The wolf is faster than you thought, he manges to dodge your sword swipe!");
-                                                        }
-                                                        break;
-                                                    case'dagger':
-                                                    case'attack dagger':
-                                                    case'attack with dagger':
-                                                        if(hit >= 30 && inventory.sword == true)
-                                                        {
-                                                            alert("You manage to slash the Wolf with your dagger.");
-                                                            wolf.health --;
-                                                        }
-                                                        else if(inventory.sword == false)
-                                                        {
-                                                          alert("You don't have a sword!");      
-                                                        }
-                                                        else
-                                                        {
-                                                            alert("The wolf jumps away before you can hit it!");
-                                                        }
-                                                        break;
-                                                    case'bow':
-                                                    case'attack bow':
-                                                    case'attack with bow':
-                                                        if(hit <= 30 && inventory.bow == true)
-                                                        {
-                                                           alert("Nice Shot!, your arrow goes straight through the wolf's heart");
-                                                            wolf.health == 0;
-                                                        }
-                                                        else if(hit >= 50 && inventory.bow == true)
-                                                        {
-                                                            alert("You manage to hit the wolf in the leg!");
-                                                            wolf.health --;
-                                                            wolf.stun = true;
-                                                        }
-                                                        else if(inventory.bow == false)
-                                                        {
-                                                            alert("You don't have a Bow!");
-                                                        }
-                                                        else
-                                                        {
-                                                            alert("Almost instantly, the wolf manages to dodge your arrow!");
-                                                        }
-                                                        break;
-                                                    default:
-                                                        alert("I don't understand" + attack);
-                                                        
-                                                }
-                                                break;
-                                                case'sword':
-                                                case'attack sword':
-                                                case'attack with sword':
-                                                if(hit >= 20 || wolf.stun == true)
-                                                    {
-                                                    alert("You easily stab your sword through the Wolf!");
-                                                    wolf.health -=2;
-                                                    }
-                                                    else
-                                                    {
-                                                        alert("The wolf is faster than you thought, he manges to dodge your sword swipe!");
-                                                    }
-                                                        break;
-                                                case'dagger':
-                                                case'attack dagger':
-                                                case'attack with dagger':
-                                                    if(hit >= 30 && inventory.sword == true)
-                                                     {
-                                                        alert("You manage to slash the Wolf with your dagger.");
-                                                        wolf.health --;
-                                                     }
-                                                    else if(inventory.sword == false)
-                                                    {
-                                                        alert("You don't have a sword!");      
-                                                    }
-                                                    else
-                                                    {
-                                                        alert("The wolf jumps away before you can hit it!");
-                                                    }
-                                                    break;
-                                                case'bow':
-                                                case'attack bow':
-                                                case'attack with bow':
-                                                    if(hit <= 30 && inventory.bow == true)
-                                                    {
-                                                        alert("Nice Shot!, your arrow goes straight through the wolf's heart");
-                                                        wolf.health == 0;
-                                                     }
-                                                    else if(hit >= 50 && inventory.bow == true)
-                                                    {
-                                                        alert("You manage to hit the wolf in the leg!");
-                                                        wolf.health --;
-                                                        wolf.stun = true;
-                                                    }
-                                                    else if(inventory.bow == false)
-                                                    {
-                                                        alert("You don't have a Bow!");
-                                                    }
-                                                    else
-                                                    {
-                                                        alert("Almost instantly, the wolf manages to dodge your arrow!");
-                                                    }
-                                                    break;
-                                                case'run':
-                                                case'run away':
-                                                    if(hit <= 50)
-                                                    {
-                                                        alert("You manage to run away, all the way back to the forest entrance!");
-                                                        playerStatus.energy --;
-                                                        Forest();
-                                                    }
-                                                    else
-                                                    {
-                                                        alert("You try your best to get away, but you can't lose the wolf. You can see the town but decide it is better to not lead the wolf into town.");
-                                                    }
-                                                    break;
-                                                case'defend':
-                                                case'block':
-                                                    if(inventory.shield == 'none')
-                                                        {
-                                                            if(hit >= 60)
-                                                            {
-                                                            alert("Even without a shield, you still manage to fend off the Wolf's attack");
-                                                            
-                                                            }
-                                                            else
-                                                            {
-                                                                alert("Without a shield, you can't do anything to stop the wolf's attack. He manages to scratch your arm");
-                                                                playerStatus.health --;
-                                                            }
-                                                        }
-                                                    break;
-                                            default:
-                                                alert("I don't understand" + wolfFight );
-                                                
-                                        }
-                                }
+								
 								
 							}
 						}
