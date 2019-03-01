@@ -71,7 +71,7 @@ var inventory = {
 	playerName: "",
 	occupation: "unemployed",
 	gold: 100,
-	sword: false,
+	sword: true,
 	dagger: true,
 	shield: "none",
 	bow: false,
@@ -80,38 +80,84 @@ var inventory = {
 	captainsOrders: false,
 	quest: "",
     questCompleteion: false,
-	lantern: false,
+	lantern: true,
 	generalsOrders: false,
 }
 //create variable object for player's stats
 var playerStatus = {
     health: 3,
     energy: 7,
-}
-//create variable object for enemies
-//enemy
-var wolf = function()
+} 
+//create variable for game over status;
+//enemy stats
+function Enemy(health, stun, name)
 {
-	var strength = 1;
-	var health = 2;
-    var stun = false;
-    var attackStatus = true;
-    var name = 'Wolf';
+    //create variables for the enemy's stats
+	this.health = health;
+    //create variable for the enemy's stun status
+    this.stun = stun;
+    //create variable for the enemy's name
+    this.name = name;
+    this.attack = function()
+    {
+        var enemyHit = Math.random() * 100;
+        if(enemyHit >= 40 && enemyHit != 100)
+            if(playerStatus.health > 0)
+            {
+                alert("The " + this.name + " manages to scratch your Arm!");
+                playerStatus.health --;
+            }
+            else 
+            {
+                alert("The " + this.name +" Slashes your throat!");
+                if(inventory.armorType == 'none')
+                    {
+                        playerStatus.health = 0;
+                    }
+                else if(invenory.armorType == 'Heavy')
+                {
+                    alert("Fortunately, the armor managed to negate all of the damage! ");
+                }
+                else
+                {
+                    alert("Fortunately, you're armor managed to lessen the blow!");
+                    playerStatus.health --;
+                    
+                }
+            }
+        else if(enemyHit == 100)
+        {
+            alert("The " + this.name + " manages to take a pretty big chunk out of your leg");
+            playerStatus.health -=2;
+        }
+        else
+        {
+            alert("The " + this.name + " stares you down, poised to attack");
+        }
+    }
     
 }
+/* Might experiment with a defualt enemy function, Still unsure how to easily allow enemies to have unique dialoge*/
 //create a town hero status variable
-
 var townHero = false;
+//create a ending variable to determine which ending the player got when the game over function is active
+var ending = '';
 //create a combat function
-var Combat = function(enemy)
+function Combat(enemy)
 {
-    alert("You encounter an " + enemy.name);
+    
+    //inform the on what enemy they are fighting
+    alert("You encounter a " + enemy.name + "!");
     while(enemy.health > 0 && playerStatus.health > 0)
    {
-        var hit = Math.Random() * 100;
+       //create hit random variable to simiulate random phenomena during combat
+        var hit = Math.random() * 100;
+       //prompt the user to do something
         var fight = prompt("what are you going to do? \n attack with something \n run away \n defend").toLowerCase();
+       //create a switch statement to help determine what the player does in battle
         switch(fight)
         {
+        // the uesr wishes to attack, but does not specify how
             case 'attack':
             var attack = prompt("What are you attacking with?").toLowerCase();
             switch(attack)
@@ -169,8 +215,22 @@ var Combat = function(enemy)
                             alert("Almost instantly, the " + enemy.name + " manages to dodge your arrow!");
                         }
                             break;
-                        default:
-                            alert("I don't understand" + attack);
+                    case'fist':
+                    case'attack with fist':
+                    case'attack fist':
+                    case'nothing':
+                    case'attack with nothing':
+                default:
+                        if(hit >= 50)
+                        {
+                            alert("You somehow manage to punch the " + enemy.name +"!")
+                        }
+                        else
+                        {
+                            alert("You're careless unarmed attack is easily countered by " + enemy.name + "!");
+                            playerStatus;--
+                        }
+                    break
                                                         
             }
                     break;
@@ -242,29 +302,85 @@ var Combat = function(enemy)
                 break;
             case'defend':
             case'block':
-            if(inventory.shield == 'none')
-            {
-                if(hit >= 60)
+                if(inventory.shield == 'none')
                 {
-                    alert("Even without a shield, you still manage to fend off the " + enemy.name + "'s attack");
+                    if(hit >= 60)
+                    {
+                        alert("Even without a shield, you still manage to fend off the " + enemy.name + "'s attack");
+                        enemy.stun == true;
                                                             
+                    }
+                    else
+                    {
+                        alert("Without a shield, you can't do anything to stop the " + enemy.name + "'s attack. He manages to scratch your arm");
+                        playerStatus.health --;
+                        enemy.stun == true;
+                    }
                 }
                 else
                 {
-                    alert("Without a shield, you can't do anything to stop the " + enemy.name + "'s attack. He manages to scratch your arm");
-                    playerStatus.health --;
+                    alert("You easily defend against the attack with a shield, and easily stun the " + enemy.name);
+                    enemy.stun == true;
                 }
-            }
                 break;
+            case'fist':
+            case'attack with fist':
+            case'attack fist':
+            case'nothing':
+            case'attack with nothing':
+                if(hit >= 50)
+                {
+                    alert("You somehow manage to punch the " + enemy.name + "!")
+                }
             default:
             alert("I don't understand" + enemyFight );
-                                                
-                                        }
-        if(enemy.stun == false && enemy.health >= )
+        }
+        if(enemy.stun == false && enemy.health >0)
+        {
+            enemy.attack();
+        }
     }
+    if(playerStatus.health <= 0)
+       {
+        GameOver();
+       }
+    else
+    {
+        alert("You have defeated the " + enemy.name);    
+    }
+}
+var GameOver = function()
+{
+    if(ending == 'forest')
+        {
+        alert("Ending: Nap in the Woods \n GAME OVER");
+        }
+    else
+    {
+        alert("GAME OVER");
+    }
+    //Ask the user if they would like to play again and create a switch function to restart the game if they do wish to play again
+    var restart = prompt("Would you like to play again? (Y\N)").toLowerCase();
+        switch(restart)
+        {
+            case'y':
+            case'ye':
+            case'yes':
+                location.reload();
+                break;
+            case'n':
+            case'no':
+                window.close();
+                break;
+            default:
+                location.reload();
+                
+                
+        }
 }
 
 Game();
+
 function Game(){
 	//state the title of the game
 	alert("Adventure");
@@ -636,6 +752,7 @@ function Game(){
     {
 		if(firstlook[7] == false )
 		   {
+            firstlook[7] = true;
 		   	alert("You walk out to the outskirts of town and see, what appears to be a military encampment. There is also a path that continues Southward.")
 			   var outskirts = prompt("What are you going to do? \n go somewhere \n investigate the encampment").toLowerCase();
 		   }
@@ -647,9 +764,11 @@ function Game(){
 			else{
 				var outskirts = prompt("What are you going to do? \n go somewhere \n investigate the encampment").toLowerCase();
 			}
-			switch (outskirts){
-				case "go": 
-			   case "go somewhere":
+        }
+			switch (outskirts)
+            {
+                case "go": 
+			    case "go somewhere":
 				   var direction = prompt("Where would you like to go?\n North, back into town \n South, further away from town\n ").toLowerCase();
 				   switch(direction) 
 				   {
@@ -684,7 +803,7 @@ function Game(){
 						   alert("I don't understand " + direction);
 						   Outskirts();   
 				
-			}
+			         }
 					break;
 				case'report':
 				case"encampment": 
@@ -701,14 +820,13 @@ function Game(){
 				case"further": 
 				case"go south":
 					Forest();
-				break;
+				    break;
 					default:
 					alert("I don't understand " + outskirts);
 					Outskirts();   
 			}
 		
-		}
-	}
+    }
     function BlockedPath()
     {
 		
@@ -720,12 +838,15 @@ function Game(){
 	function Forest()
 	{
 		//ask the player if they would like to enter the forest
-		var forest = prompt("The forest seems pretty dark and scary, are you sure you want to go in there?(Y/N)").toLowerCase;
+		var forest = prompt("The forest seems pretty dark and scary, are you sure you want to go in there?(Y/N)").toLowerCase();
+        do {
 		switch(forest)
 			{
-				case 'y':
-				case'yes':
-				case 'ye':
+				case "y":
+				case"yes":
+				case "ye":
+                    //create explore variable, should the player wish to keep investigating the forest
+                    var explore = true;
 					//if the player has the generals's orders and a lantern, they get through the forest safely
 					if(inventory.generalsOrders == true && inventory.lantern == true)
 						{
@@ -737,17 +858,25 @@ function Game(){
 						{
                             //while the player wander's trhough the forest, they lose an energy
 							playerStatus.energy--
-							var encounter = Math.Random() * 100;
-							if(encounter >= 50){
+							var encounter = Math.random() * 100;
+							if(encounter >= 50)
+                            {
 								alert("As you aimlessly wander around the forest, you begin to hear growling and the rustling of leaves");
-								var enemy = new enemy();
-                                alert("You encounter a " + enemy.name + "!");
-                                Combat();
-								
-								
-								
+								wolf = new Enemy(2,false,'Wolf');
+                                Combat(wolf);
 							}
+                            else
+                            {    
+                             alert("The forest continues to loom as you walk, but nothing happens.")   
+                            }
 						}
+                    else
+                        {
+                            alert("As you stumble around in the darkness, you manage to trip on a rock and hit your head! You decide to take a nice nap.... FOREVER!");
+                            var ending = 'Forest';
+                            GameOver();
+                        }
+                
 					break;
 				case'n':
 				case'no':
@@ -756,7 +885,10 @@ function Game(){
 				default:
 					alert("I don't understand" + forest);
 					Forest();
+            }
+             forest = prompt("Would you like to keep exploring the Forest?(Y/N)").toLowerCase();
 			}
+        while (explore == true)
 
 		
 	}
@@ -764,4 +896,8 @@ function Game(){
 	{
 		
 	}
+    function Battlefield()
+    {
+    
+    }
 }
