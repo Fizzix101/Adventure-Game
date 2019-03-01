@@ -66,12 +66,20 @@ var checkGold = function()
 {
 	alert ("You have " + inventory.gold + "gold")
 }
+//create a function to check status
+var checkStatus = function()
+{
+	for (var prop in playerStatus)
+		{
+			alert(prop);
+		}
+}
 //create variable object for inventory
 var inventory = {
 	playerName: "",
 	occupation: "unemployed",
 	gold: 100,
-	sword: true,
+	sword: false,
 	dagger: true,
 	shield: "none",
 	bow: false,
@@ -80,7 +88,7 @@ var inventory = {
 	captainsOrders: false,
 	quest: "",
     questCompleteion: false,
-	lantern: true,
+	lantern: false,
 	generalsOrders: false,
 }
 //create variable object for player's stats
@@ -88,8 +96,8 @@ var playerStatus = {
     health: 3,
     energy: 7,
 } 
-//create variable for game over status;
-//enemy stats
+//Create enemy constructuor to easily pass to the Combat function
+/* Might experiment with a defualt enemy function, Still unsure how to easily allow enemies to have unique dialoge*/
 function Enemy(health, stun, name)
 {
     //create variables for the enemy's stats
@@ -137,7 +145,6 @@ function Enemy(health, stun, name)
     }
     
 }
-/* Might experiment with a defualt enemy function, Still unsure how to easily allow enemies to have unique dialoge*/
 //create a town hero status variable
 var townHero = false;
 //create a ending variable to determine which ending the player got when the game over function is active
@@ -220,7 +227,6 @@ function Combat(enemy)
                     case'attack fist':
                     case'nothing':
                     case'attack with nothing':
-                default:
                         if(hit >= 50)
                         {
                             alert("You somehow manage to punch the " + enemy.name +"!")
@@ -228,9 +234,11 @@ function Combat(enemy)
                         else
                         {
                             alert("You're careless unarmed attack is easily countered by " + enemy.name + "!");
-                            playerStatus;--
+                            playerStatus.health--;
                         }
-                    break
+					break;
+				default:
+						
                                                         
             }
                     break;
@@ -351,7 +359,7 @@ function Combat(enemy)
 }
 var GameOver = function()
 {
-    if(ending == 'forest')
+    if(ending == 'Forest')
         {
         alert("Ending: Nap in the Woods \n GAME OVER");
         }
@@ -360,22 +368,17 @@ var GameOver = function()
         alert("GAME OVER");
     }
     //Ask the user if they would like to play again and create a switch function to restart the game if they do wish to play again
-    var restart = prompt("Would you like to play again? (Y\N)").toLowerCase();
+    var restart = confirm("Would you like to play again? Press OK to restart the game");
         switch(restart)
         {
-            case'y':
-            case'ye':
-            case'yes':
-                location.reload();
+			case true:
+               document.location.reload();
                 break;
-            case'n':
-            case'no':
+			case false:
                 window.close();
                 break;
             default:
-                location.reload();
-                
-                
+                document.location.reload();     
         }
 }
 
@@ -395,7 +398,7 @@ function Game(){
 		//ask the user what they would like to do in the town square and display the description of the Town Square based on whether or not 
 		if(firstlook[0] == false)
 			{
-			var townSquare = prompt("Welcome to the capitol city of Stralton. You stand in the town square. the city is full of life all around you. There is a Merchant selling his wares. There is a path to the north heading towards the castle. There is what appears to be a bulletin board with several advertisements. There are also a path to the East, but you don't know what is over there. The path to the South leads to the outskirts of town. The path to the West appears to be blocked by some guards. What are you going to do? \n go somewhere. \n talk to merchant \n investigate the bulletin board \n look around again (this option will give the discription of the current area)").toLowerCase();
+			var townSquare = prompt("Welcome to the capitol city of Stralton. You stand in the town square. the city is full of life all around you. There is a Merchant selling his wares. There is a path to the north heading towards the castle. There is what appears to be a bulletin board with several advertisements. There are also a path to the East, but you don't know what is over there. The path to the South leads to the outskirts of town. The path to the West appears to be blocked by some guards. What are you going to do? \n go somewhere. \n talk to merchant \n investigate the bulletin board \n check inventory or gold \n check player status \n look around again (this option will give the discription of the current area)").toLowerCase();
 			firstlook[0] = true;
 			}
 		else{
@@ -498,6 +501,20 @@ function Game(){
                    firstlook[0] = false;
                    TownSquare();
 				   break;
+				case"check inventory":
+				case"inventory":
+				   break;
+				case"check gold":
+				case"gold":
+				   checkGold();
+				   TownSquare();
+				   break;
+				case"check status":
+				case"check stats":
+				case"status":
+				case"stats":
+				   
+				   break;
 				   //we can't understand the input
 				default:
 						alert("I don't understand " + townSquare);
@@ -594,6 +611,7 @@ function Game(){
 		}
 		
 	}
+	///create castle gates function
 	function CastleGates()
 	{
 		//the user attempts to go into the castle for the first time
@@ -647,6 +665,7 @@ function Game(){
 			}
 		
 	}
+	//create guard barracks function
 	function GuardBarracks()
 	{
 		//this loop is only here so the game doesn't break.
@@ -748,6 +767,7 @@ function Game(){
                 }
 		}
 	}
+	//create OUtskirts function
     function Outskirts()
     {
 		if(firstlook[7] == false )
@@ -839,6 +859,8 @@ function Game(){
 	{
 		//ask the player if they would like to enter the forest
 		var forest = prompt("The forest seems pretty dark and scary, are you sure you want to go in there?(Y/N)").toLowerCase();
+		if(playerStatus.energy > 0)
+			{
         do {
 		switch(forest)
 			{
@@ -856,15 +878,17 @@ function Game(){
                     //if the player goes through the forest with a lantern and without the captain's orders, the player has a chance to encounter an enemy
 					else if(inventory.lantern == true)
 						{
-                            //while the player wander's trhough the forest, they lose an energy
+                            //while the player wander's trhough the forest, they lose an energy and have a chance for a random encounter
 							playerStatus.energy--
 							var encounter = Math.random() * 100;
+							//If the player encounters an enemy
 							if(encounter >= 50)
                             {
 								alert("As you aimlessly wander around the forest, you begin to hear growling and the rustling of leaves");
 								wolf = new Enemy(2,false,'Wolf');
                                 Combat(wolf);
 							}
+							//the player doesn't encounter an enemy
                             else
                             {    
                              alert("The forest continues to loom as you walk, but nothing happens.")   
@@ -872,9 +896,11 @@ function Game(){
 						}
                     else
                         {
+							//the player doesn't have any items needed to go through the forest safely, and gets a game over
                             alert("As you stumble around in the darkness, you manage to trip on a rock and hit your head! You decide to take a nice nap.... FOREVER!");
-                            var ending = 'Forest';
+                            ending = 'Forest';
                             GameOver();
+							explore = false;
                         }
                 
 					break;
@@ -886,9 +912,24 @@ function Game(){
 					alert("I don't understand" + forest);
 					Forest();
             }
+			//if the player wishes to continue exploring the forest and has enough energy to do so
+			if(explore == true && playerStatus.energy > 0){
              forest = prompt("Would you like to keep exploring the Forest?(Y/N)").toLowerCase();
 			}
+			//the player doesn't have enough energy to keep exploring
+			else if (playerStatus.energy <= 0)
+				{
+					alert("You feel too tired to contiune onward, so you return to the forest enterance");
+					Forest();
+				}
+			}
         while (explore == true)
+		}
+		else
+		{
+			alert("You feel to tired to explore the Forest, you should probably repenish your energy first");
+			Forest();
+		}
 
 		
 	}
@@ -900,4 +941,8 @@ function Game(){
     {
     
     }
+	function BulletinBoard()
+	{
+			
+	}
 }
