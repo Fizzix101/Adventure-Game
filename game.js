@@ -1,3 +1,11 @@
+/*  Matthew Allphin
+    B2
+    HTML5
+    Adventure Game 
+    game.js                */
+
+
+
 //Single line comment
 /* 
 Multiline comment
